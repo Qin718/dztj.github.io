@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星辰博客 | 技术 & 生活</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --darker: #1a252f;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+            --light-gray: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary: #1abc9c;
+            --primary-dark: #16a085;
+            --secondary: #f39c12;
+            --dark: #ecf0f1;
+            --darker: #bdc3c7;
+            --light: #2c3e50;
+            --gray: #bdc3c7;
+            --light-gray: #34495e;
+            --shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 头部样式 */
+        header {
+            background-color: var(--darker);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-dark);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 主要内容 */
+        main {
+            padding: 30px 0 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            display: inline-block;
+            padding: 0 20px;
+            background-color: var(--light);
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary);
+            z-index: 1;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .post-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .dark-mode .post-card {
+            background-color: var(--light-gray);
+        }
+
+        .post-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .post-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .post-card:hover .post-image img {
+            transform: scale(1.05);
+        }
+
+        .post-content {
+            padding: 25px;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .post-tag {
+            background-color: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--darker);
+        }
+
+        .post-excerpt {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .read-more i {
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+
+        .read-more:hover i {
+            transform: translateX(5px);
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .dark-mode .sidebar {
+            background-color: var(--light-gray);
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .about-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+            border: 3px solid var(--primary);
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            background-color: var(--primary-dark);
+        }
+
+        .categories, .tags {
+            margin-bottom: 30px;
+        }
+
+        .category-list, .tag-list {
+            list-style: none;
+        }
+
+        .category-list li, .tag-list li {
+            margin-bottom: 10px;
+        }
+
+        .category-list a, .tag-list a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .category-list a:hover, .tag-list a:hover {
+            color: var(--primary);
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag-list li {
+            margin-bottom: 10px;
+        }
+
+        .tag-list a {
+            background-color: var(--light-gray);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .tag-list a:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--darker);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .about-me {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-img {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-blog"></i>
+                <span>星辰博客</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#"><i class="fas fa-folder"></i> 分类</a></li>
+                    <li><a href="#"><i class="fas fa-tags"></i> 标签</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> 关于</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> 联系</a></li>
+                </ul>
+            </nav>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>分享知识与生活点滴</h1>
+            <p>一个专注于Web开发、编程技巧和生活感悟的个人博客，记录成长路上的思考与收获</p>
+            <a href="#" class="btn">浏览文章</a>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <main class="container">
+        <div class="section-title">
+            <h2>最新文章</h2>
+        </div>
+
+        <div class="posts-grid">
+            <!-- 文章卡片 1 -->
+            <article class="post-card">
+                <div class="post-image">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="前端开发">
+                </div>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2023-06-15</span>
+                        <span><i class="far fa-eye"></i> 1.2K</span>
+                    </div>
+                    <div class="post-tag">前端开发</div>
+                    <h3 class="post-title">深入理解JavaScript闭包原理与应用</h3>
+                    <p class="post-excerpt">闭包是JavaScript中一个强大且常被误解的概念。本文将详细讲解闭包的工作原理，并通过实际案例展示其在模块化、数据封装和高阶函数中的应用场景...</p>
+                    <a href="#" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <!-- 文章卡片 2 -->
+            <article class="post-card">
+                <div class="post-image">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="后端技术">
+                </div>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2023-06-10</span>
+                        <span><i class="far fa-eye"></i> 2.4K</span>
+                    </div>
+                    <div class="post-tag" style="background-color: #e74c3c;">后端技术</div>
+                    <h3 class="post-title">RESTful API设计最佳实践</h3>
+                    <p class="post-excerpt">构建一个优秀的RESTful API需要考虑资源命名、状态码使用、版本控制等多个方面。本文总结了多年实践中积累的最佳实践和常见陷阱...</p>
+                    <a href="#" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <!-- 文章卡片 3 -->
+            <article class="post-card">
+                <div class="post-image">
+                    <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80" alt="生活感悟">
+                </div>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2023-06-05</span>
+                        <span><i class="far fa-eye"></i> 3.1K</span>
+                    </div>
+                    <div class="post-tag" style="background-color: #9b59b6;">生活感悟</div>
+                    <h3 class="post-title">程序员如何保持持续学习动力</h3>
+                    <p class="post-excerpt">在技术日新月异的时代，保持学习动力对程序员至关重要。本文分享了我坚持学习的7个有效方法和心态调整技巧，帮助你在技术道路上走得更远...</p>
+                    <a href="#" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <!-- 文章卡片 4 -->
+            <article class="post-card">
+                <div class="post-image">
+                    <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="工具分享">
+                </div>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 2023-05-28</span>
+                        <span><i class="far fa-eye"></i> 1.8K</span>
+                    </div>
+                    <div class="post-tag" style="background-color: #f39c12;">工具分享</div>
+                    <h3 class="post-title">2023年提升开发效率的10个VSCode插件</h3>
+                    <p class="post-excerpt">Visual Studio Code已成为前端开发的首选工具。本文推荐10个能极大提升开发效率的插件，涵盖代码片段、调试、版本控制等多个方面，帮助您更快更好地完成工作...</p>
+                    <a href="#" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+
+        <div class="sidebar">
+            <!-- 关于我 -->
+            <div class="about">
+                <h3 class="sidebar-title">关于我</h3>
+                <div class="about-me">
+                    <div class="profile-img">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" alt="博主头像">
+                    </div>
+                    <div>
+                        <h4>张星辰</h4>
+                        <p>全栈工程师 | 技术博主</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-weibo"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <p>热爱编程与技术分享，专注于Web开发领域。喜欢探索新技术，记录学习过程中的思考与收获。</p>
+            </div>
+
+            <!-- 分类 -->
+            <div class="categories">
+                <h3 class="sidebar-title">文章分类</h3>
+                <ul class="category-list">
+                    <li><a href="#">前端开发 <span>(24)</span></a></li>
+                    <li><a href="#">后端技术 <span>(18)</span></a></li>
+                    <li><a href="#">数据库 <span>(12)</span></a></li>
+                    <li><a href="#">DevOps <span>(9)</span></a></li>
+                    <li><a href="#">生活感悟 <span>(15)</span></a></li>
+                </ul>
+            </div>
+
+            <!-- 标签 -->
+            <div class="tags">
+                <h3 class="sidebar-title">热门标签</h3>
+                <ul class="tag-list">
+                    <li><a href="#">JavaScript</a></li>
+                    <li><a href="#">React</a></li>
+                    <li><a href="#">Node.js</a></li>
+                    <li><a href="#">TypeScript</a></li>
+                    <li><a href="#">CSS</a></li>
+                    <li><a href="#">Docker</a></li>
+                    <li><a href="#">Git</a></li>
+                    <li><a href="#">算法</a></li>
+                    <li><a href="#">性能优化</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于博客</h3>
+                    <p>星辰博客是一个分享编程技术、开发经验和生活感悟的个人平台，旨在记录和分享学习过程中的思考和收获。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 首页</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 关于我</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 所有文章</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 资源导航</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> 联系我</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contact@xingchen.com</li>
+                        <li><i class="fab fa-github"></i> github.com/xingchen</li>
+                        <li><i class="fab fa-twitter"></i> twitter.com/xingchen</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 中国，北京</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 星辰博客 | 由GitHub Pages提供支持</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // 检查本地存储或系统偏好
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
